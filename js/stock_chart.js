@@ -1,14 +1,49 @@
 var fetch_url = "https://bigmoneymoves.github.io/data/stocks.json";
 var tickers_url = "https://bronze-cool-ceratonykus.glitch.me/tickers";
+var tickers_write_url = "https://bronze-cool-ceratonykus.glitch.me/tickers/write";
 var all_stock_data = {};
 var table_headers = ["TICKER", "PREV CLOSE", "CUR PRICE", "CHANGE", "CHANGE %", "VOLUME"];
 var tickers = [];
 
 async function add_ticker(ticker){
-  return
+  toAdd = ticker.toUpperCase();
+  tickers = await getData(tickers_url);
+
+  if (tickers.includes(toAdd)){
+    alert("The specified ticker already exists in the database.")
+    return
+  }
+  else {
+    tickers.push(toAdd);
+    const response = await fetch(tickers_write_url, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(tickers)
+    })
+
+    return
+  }
 }
 
 async function remove_ticker(ticker){
+  toRemove = ticker.toUpperCase();
+  tickers = await getData(tickers_url);
+
+  if (tickers.includes(toRemove)){
+    pos = tickers.indexOf(ticker);
+    tickers.splice(pos, 1);
+    console.log(tickers);
+
+    const response = await fetch(tickers_write_url, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(tickers)
+    })
+  }
+  else {
+    alert("The specified ticker does not exist in the database. Please check your spelling.");
+    return;
+  }
   return
 }
 
@@ -30,6 +65,10 @@ function update_chart(){
   for (var i = 0; i < tickers.length; i++) {
     var ticker = tickers[i]
     var ticker_data = all_stock_data[ticker]
+
+    if (ticker_data === undefined){
+      continue;
+    }
 
     var row = table.insertRow()
     // ["TICKER", "PREV CLOSE", "CUR PRICE", "CHANGE", "CHANGE %", "VOLUME"]
@@ -80,4 +119,4 @@ function search_chart(key){
   }
 }
 
-fetch_stocks()
+fetch_stocks();
