@@ -1,11 +1,12 @@
 var fetch_url = "https://bigmoneymoves.github.io/data/stocks.json";
-var tickers_url = "https://bigmoneymoves.github.io/data/tickers.txt";
+var tickers_url = "https://bronze-cool-ceratonykus.glitch.me/tickers";
 var all_stock_data = {};
 var table_headers = ["TICKER", "PREV CLOSE", "CUR PRICE", "CHANGE", "CHANGE %", "VOLUME"];
-var tickers;
+var tickers = [];
 
-async function update_tickers(url){
-  tickers = await getData(tickers_url)
+async function check_tickers(ticker){
+  tickers = await getData(tickers_url);
+  return
 }
 
 async function add_ticker(ticker){
@@ -50,6 +51,21 @@ function update_chart(){
     cell3.innerHTML = ticker_data[2]
     cell4.innerHTML = ticker_data[3]
     cell5.innerHTML = ticker_data[4]
+
+    change = parseFloat(ticker_data[3])
+
+    if (change > 0){
+      cell3.classList.add("text-success")
+      cell4.classList.add("text-success")
+    }
+    else if (change < 0){
+      cell3.classList.add("text-danger")
+      cell4.classList.add("text-danger")
+    }
+    else {
+      cell3.classList.add("text-warning")
+      cell4.classList.add("text-warning")
+    }
   }
   return
 }
@@ -69,5 +85,5 @@ function search_chart(key){
   }
 }
 
-update_tickers()
+check_tickers()
 fetch_stocks()
