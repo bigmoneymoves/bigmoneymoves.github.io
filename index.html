@@ -44,7 +44,13 @@
       <h1 class='display-1 text-center text-warning'>GME to the Moon!</h1>
     </p>
     <div class="container">
-      <input type="text" id="searchInput" onkeyup="search_chart('searchInput')" placeholder="Search for ticker...">
+      <div class="form-group">
+        <div class="col-2">
+        <label for="searchInput" class="text-light">Filter by name:</label>
+        <input type="text" class="form-control form-control-sm" id="searchInput" onkeyup="search_chart('searchInput')"  aria-describedby="emailHelp" placeholder="Search for ticker...">
+        </div>
+      </div>
+      <hr class="my-2"/>
       <table id="stockTable" class="table table-hover table-sm table-dark">
         <tr class="table-primary">
           <th>TICKER</th>
