@@ -4,11 +4,6 @@ var all_stock_data = {};
 var table_headers = ["TICKER", "PREV CLOSE", "CUR PRICE", "CHANGE", "CHANGE %", "VOLUME"];
 var tickers = [];
 
-async function check_tickers(ticker){
-  tickers = await getData(tickers_url);
-  return
-}
-
 async function add_ticker(ticker){
   return
 }
@@ -19,7 +14,7 @@ async function remove_ticker(ticker){
 
 async function fetch_stocks(){
   all_stock_data = await getData(fetch_url);
-  console.log(all_stock_data)
+  tickers = await getData(tickers_url);
   update_chart();
 
   return
@@ -32,8 +27,8 @@ async function getData(url){
 
 function update_chart(){
   table = document.getElementById("stockTable");
-  for (var i = 0; i < tickers.tickers.length; i++) {
-    var ticker = tickers.tickers[i]
+  for (var i = 0; i < tickers.length; i++) {
+    var ticker = tickers[i]
     var ticker_data = all_stock_data[ticker]
 
     var row = table.insertRow()
@@ -85,5 +80,4 @@ function search_chart(key){
   }
 }
 
-check_tickers()
 fetch_stocks()
