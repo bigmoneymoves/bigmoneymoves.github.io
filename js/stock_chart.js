@@ -54,5 +54,20 @@ function update_chart(){
   return
 }
 
+function search_chart(key){
+  var searchTerm = document.getElementById(key).value.toUpperCase();
+  var table = document.getElementById("stockTable");
+  var rows = table.rows;
+  for (var i = 1; i < rows.length; i++) {
+    td = rows[i].getElementsByTagName("td")[0]; // get first column of row
+    if (!td.innerHTML.startsWith(searchTerm)){
+      rows[i].style.display = "none"
+    }
+    else {
+      rows[i].style.display = ""
+    }
+  }
+}
+
 update_tickers()
 fetch_stocks()
