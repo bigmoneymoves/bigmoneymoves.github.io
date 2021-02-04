@@ -79,7 +79,9 @@ function update_chart(){
     var cell4 = row.insertCell(-1)
     var cell5 = row.insertCell(-1)
 
-    cell0.innerHTML = ticker
+    console.log(cell0)
+    cell0.innerHTML = `<a class="text-light" style="text-decoration: none;" href="https://finance.yahoo.com/quote/${ticker}">${ticker}</a>`
+
     cell1.innerHTML = ticker_data[0]
     cell2.innerHTML = ticker_data[1]
     cell3.innerHTML = ticker_data[2]
