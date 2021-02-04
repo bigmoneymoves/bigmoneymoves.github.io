@@ -121,22 +121,27 @@ function update_chart(){
       }
     }
 
-    change = parseFloat(ticker_data[3])
-    var cells = document.getElementById(ticker).cells
+    if (ticker_data === undefined){
+      continue;
+    }
+    else{
+      change = parseFloat(ticker_data[3])
+      var cells = document.getElementById(ticker).cells
 
-    if (change > 0){
-      cells[3].innerHTML = '+' + ticker_data[2]
-      cells[4].innerHTML = '+' + ticker_data[3]
-      cells[3].classList.add("text-success")
-      cells[4].classList.add("text-success")
-    }
-    else if (change < 0){
-      cells[3].classList.add("text-danger")
-      cells[4].classList.add("text-danger")
-    }
-    else {
-      cells[3].classList.add("text-warning")
-      cells[4].classList.add("text-warning")
+      if (change > 0){
+        cells[3].innerHTML = '+' + ticker_data[2]
+        cells[4].innerHTML = '+' + ticker_data[3]
+        cells[3].classList.add("text-success")
+        cells[4].classList.add("text-success")
+      }
+      else if (change < 0){
+        cells[3].classList.add("text-danger")
+        cells[4].classList.add("text-danger")
+      }
+      else {
+        cells[3].classList.add("text-warning")
+        cells[4].classList.add("text-warning")
+      }
     }
   }
   return
