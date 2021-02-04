@@ -5,8 +5,14 @@ var all_stock_data = {};
 var table_headers = ["TICKER", "PREV CLOSE", "CUR PRICE", "CHANGE", "CHANGE %", "VOLUME"];
 var tickers = [];
 
-async function add_ticker(ticker){
-  toAdd = ticker.toUpperCase();
+async function add_ticker(id){
+  var ticker = document.getElementById(id).value;
+  var toAdd = ticker.toUpperCase();
+
+  if (toAdd == ""){
+    alert("You have not entered a valid ticker. Please check your spelling.")
+  }
+
   tickers = await getData(tickers_url);
 
   if (tickers.includes(toAdd)){
@@ -14,31 +20,53 @@ async function add_ticker(ticker){
     return
   }
   else {
+    document.getElementById(id).value = "";
     tickers.push(toAdd);
-    const response = await fetch(tickers_write_url, {
+
+    response = await fetch(tickers_write_url, {
       method: "PUT",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(tickers)
-    })
+      body: JSON.stringify(tickers),
+    });
+
+    if (response.ok){
+      alert("The ticker " + ticker + " has been successfully added!")
+    }
+    else{
+      alert("The ticker " + ticker + " could not be added. Please try again.")
+    }
 
     return
   }
 }
 
-async function remove_ticker(ticker){
-  toRemove = ticker.toUpperCase();
+async function remove_ticker(id){
+  var ticker = document.getElementById(id).value;
+  var toRemove = ticker.toUpperCase();
+
+  if (toRemove == ""){
+    alert("You have not entered a valid ticker. Please check your spelling.")
+  }
+
   tickers = await getData(tickers_url);
 
   if (tickers.includes(toRemove)){
+    document.getElementById(id).value = "";
     pos = tickers.indexOf(ticker);
     tickers.splice(pos, 1);
-    console.log(tickers);
 
     const response = await fetch(tickers_write_url, {
       method: "PUT",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(tickers)
-    })
+    });
+
+    if (response.ok){
+      alert("The ticker " + ticker + " has been successfully removed!" )
+    }
+    else{
+      alert("The ticker " + ticker + " could not be removed. Please try again.")
+    }
   }
   else {
     alert("The specified ticker does not exist in the database. Please check your spelling.");
