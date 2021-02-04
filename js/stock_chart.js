@@ -162,4 +162,4 @@ function search_chart(key){
   }
 }
 
-setInterval(fetch_stocks, 750)
+setInterval(fetch_stocks, 500)
