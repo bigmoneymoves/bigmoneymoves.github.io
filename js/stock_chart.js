@@ -100,21 +100,6 @@ function update_chart(){
         cell3.innerHTML = ticker_data[2]
         cell4.innerHTML = ticker_data[3]
         cell5.innerHTML = ticker_data[4]
-
-        change = parseFloat(ticker_data[3])
-
-        if (change > 0){
-          cell3.classList.add("text-success")
-          cell4.classList.add("text-success")
-        }
-        else if (change < 0){
-          cell3.classList.add("text-danger")
-          cell4.classList.add("text-danger")
-        }
-        else {
-          cell3.classList.add("text-warning")
-          cell4.classList.add("text-warning")
-        }
       }
     }
     else{
@@ -136,7 +121,20 @@ function update_chart(){
       }
     }
 
+    change = parseFloat(ticker_data[3])
 
+    if (change > 0){
+      cell3.classList.add("text-success")
+      cell4.classList.add("text-success")
+    }
+    else if (change < 0){
+      cell3.classList.add("text-danger")
+      cell4.classList.add("text-danger")
+    }
+    else {
+      cell3.classList.add("text-warning")
+      cell4.classList.add("text-warning")
+    }
   }
   return
 }
