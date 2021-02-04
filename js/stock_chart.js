@@ -117,4 +117,4 @@ function search_chart(key){
   }
 }
 
-fetch_stocks();
+setInterval(fetch_stocks(), 750)
