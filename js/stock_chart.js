@@ -1,8 +1,7 @@
-var fetch_url = "https://bigmoneymoves.github.io/data/stocks.json";
-var tickers_url = "https://bronze-cool-ceratonykus.glitch.me/tickers";
-var tickers_write_url = "https://bronze-cool-ceratonykus.glitch.me/tickers/write";
+var fetch_url = "https://updategithubdata.deraphel.repl.co/stocks";
+var write_url = "https://updategithubdata.deraphel.repl.co/stocks-write/";
+var delete_url = "https://updategithubdata.deraphel.repl.co/stocks-delete/";
 var all_stock_data = {};
-var table_headers = ["TICKER", "PREV CLOSE", "CUR PRICE", "CHANGE", "CHANGE %", "VOLUME"];
 var tickers = [];
 
 async function add_ticker(id){
@@ -13,31 +12,17 @@ async function add_ticker(id){
     alert("You have not entered a valid ticker. Please check your spelling.")
   }
 
-  tickers = await getData(tickers_url);
+  const response = await fetch(write_url + toAdd)
 
-  if (tickers.includes(toAdd)){
-    alert("The specified ticker already exists in the database.")
-    return
+  if (response.ok){
+    document.getElementById(id).value = ""
+    alert("The ticker " + toAdd + " was added to the database successfully!")
   }
-  else {
-    document.getElementById(id).value = "";
-    tickers.push(toAdd);
-
-    response = await fetch(tickers_write_url, {
-      method: "PUT",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(tickers),
-    });
-
-    if (response.ok){
-      alert("The ticker " + ticker + " has been successfully added!")
-    }
-    else{
-      alert("The ticker " + ticker + " could not be added. Please try again.")
-    }
-
-    return
+  else{
+    alert("The ticker " + toAdd + " already exists in the database.")
   }
+
+  return
 }
 
 async function remove_ticker(id){
@@ -48,36 +33,21 @@ async function remove_ticker(id){
     alert("You have not entered a valid ticker. Please check your spelling.")
   }
 
-  tickers = await getData(tickers_url);
+  const response = await fetch(delete_url + toRemove)
+  const status = response.text()
 
-  if (tickers.includes(toRemove)){
-    document.getElementById(id).value = "";
-    pos = tickers.indexOf(ticker);
-    tickers.splice(pos, 1);
-
-    const response = await fetch(tickers_write_url, {
-      method: "PUT",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(tickers)
-    });
-
-    if (response.ok){
-      alert("The ticker " + ticker + " has been successfully removed!" )
-    }
-    else{
-      alert("The ticker " + ticker + " could not be removed. Please try again.")
-    }
+  if (response.ok){
+    document.getElementById(id).value = ""
+    alert("The ticker " + toRemove + " was removed from the database successfully!")
   }
-  else {
-    alert("The specified ticker does not exist in the database. Please check your spelling.");
-    return;
+  else{
+    alert("The ticker " + toRemove + " does not exist in the database.")
   }
-  return
 }
 
 async function fetch_stocks(){
   all_stock_data = await getData(fetch_url);
-  tickers = await getData(tickers_url);
+  tickers = all_stock_data["tickers"];
   update_chart();
 
   return
@@ -92,7 +62,7 @@ function update_chart(){
   table = document.getElementById("stockTable");
   for (var i = 0; i < tickers.length; i++) {
     var ticker = tickers[i]
-    var ticker_data = all_stock_data[ticker]
+    var ticker_data = all_stock_data["stocks"][ticker]
 
     if (ticker_data === undefined){
       continue;

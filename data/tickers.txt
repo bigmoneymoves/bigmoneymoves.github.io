@@ -1,1 +1,0 @@
-{"tickers": ["GME", "BB.TO", "AMC", "ARKK", "AC.TO", "NOK", "GM", "BCRX", "NOVN", "CRSR", "BNGO", "MMED.NE", "BTEC"]}
