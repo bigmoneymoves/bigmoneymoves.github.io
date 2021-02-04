@@ -124,6 +124,8 @@ function update_chart(){
     change = parseFloat(ticker_data[3])
 
     if (change > 0){
+      cells[3].innerHTML = '+' + ticker_data[2]
+      cells[4].innerHTML = '+' + ticker_data[3]
       cell3.classList.add("text-success")
       cell4.classList.add("text-success")
     }
