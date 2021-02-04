@@ -39,6 +39,15 @@ async function remove_ticker(id){
   if (response.ok){
     document.getElementById(id).value = ""
     alert("The ticker " + toRemove + " was removed from the database successfully!")
+
+    var elem = document.getElementById(toRemove);
+
+    if (elem != null){
+      elem.parentNode.removeChild(elem);
+    }
+    else{
+      return
+    }
   }
   else{
     alert("The ticker " + toRemove + " does not exist in the database.")
@@ -63,41 +72,71 @@ function update_chart(){
   for (var i = 0; i < tickers.length; i++) {
     var ticker = tickers[i]
     var ticker_data = all_stock_data["stocks"][ticker]
+    var rowExist = document.getElementById(ticker)
 
-    if (ticker_data === undefined){
-      continue;
+    if (rowExist == null){
+      var row = table.insertRow()
+      row.id = ticker
+      // ["TICKER", "PREV CLOSE", "CUR PRICE", "CHANGE", "CHANGE %", "VOLUME"]
+      var cell0 = row.insertCell(-1)
+      var cell1 = row.insertCell(-1)
+      var cell2 = row.insertCell(-1)
+      var cell3 = row.insertCell(-1)
+      var cell4 = row.insertCell(-1)
+      var cell5 = row.insertCell(-1)
+
+      cell0.innerHTML = `<a class="text-light" style="text-decoration: none;" href="https://finance.yahoo.com/quote/${ticker}">${ticker}</a>`
+
+      if (ticker_data === undefined){
+        cell1.innerHTML = "N/A"
+        cell2.innerHTML = "N/A"
+        cell3.innerHTML = "N/A"
+        cell4.innerHTML = "N/A"
+        cell5.innerHTML = "N/A"
+      }
+      else{
+        cell1.innerHTML = ticker_data[0]
+        cell2.innerHTML = ticker_data[1]
+        cell3.innerHTML = ticker_data[2]
+        cell4.innerHTML = ticker_data[3]
+        cell5.innerHTML = ticker_data[4]
+
+        change = parseFloat(ticker_data[3])
+
+        if (change > 0){
+          cell3.classList.add("text-success")
+          cell4.classList.add("text-success")
+        }
+        else if (change < 0){
+          cell3.classList.add("text-danger")
+          cell4.classList.add("text-danger")
+        }
+        else {
+          cell3.classList.add("text-warning")
+          cell4.classList.add("text-warning")
+        }
+      }
+    }
+    else{
+      var cells = rowExist.cells;
+
+      if (ticker_data === undefined){
+        cells[1].innerHTML = "N/A"
+        cells[2].innerHTML = "N/A"
+        cells[3].innerHTML = "N/A"
+        cells[4].innerHTML = "N/A"
+        cells[5].innerHTML = "N/A"
+      }
+      else{
+        cells[1].innerHTML = ticker_data[0]
+        cells[2].innerHTML = ticker_data[1]
+        cells[3].innerHTML = ticker_data[2]
+        cells[4].innerHTML = ticker_data[3]
+        cells[5].innerHTML = ticker_data[4]
+      }
     }
 
-    var row = table.insertRow()
-    // ["TICKER", "PREV CLOSE", "CUR PRICE", "CHANGE", "CHANGE %", "VOLUME"]
-    var cell0 = row.insertCell(-1)
-    var cell1 = row.insertCell(-1)
-    var cell2 = row.insertCell(-1)
-    var cell3 = row.insertCell(-1)
-    var cell4 = row.insertCell(-1)
-    var cell5 = row.insertCell(-1)
 
-    cell0.innerHTML = `<a class="text-light" style="text-decoration: none;" href="https://finance.yahoo.com/quote/${ticker}">${ticker}</a>`
-    cell1.innerHTML = ticker_data[0]
-    cell2.innerHTML = ticker_data[1]
-    cell3.innerHTML = ticker_data[2]
-    cell4.innerHTML = ticker_data[3]
-    cell5.innerHTML = ticker_data[4]
-
-    change = parseFloat(ticker_data[3])
-
-    if (change > 0){
-      cell3.classList.add("text-success")
-      cell4.classList.add("text-success")
-    }
-    else if (change < 0){
-      cell3.classList.add("text-danger")
-      cell4.classList.add("text-danger")
-    }
-    else {
-      cell3.classList.add("text-warning")
-      cell4.classList.add("text-warning")
-    }
   }
   return
 }
@@ -117,4 +156,4 @@ function search_chart(key){
   }
 }
 
-fetch_stocks()
+setInterval(fetch_stocks, 750)
