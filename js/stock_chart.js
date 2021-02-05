@@ -86,64 +86,34 @@ function update_chart(){
       var cell3 = row.insertCell(-1)
       var cell4 = row.insertCell(-1)
       var cell5 = row.insertCell(-1)
-
       cell0.innerHTML = `<a class="text-light" style="text-decoration: none;" href="https://finance.yahoo.com/quote/${ticker}">${ticker}</a>`
-
-      if (ticker_data === undefined){
-        cell1.innerHTML = "N/A"
-        cell2.innerHTML = "N/A"
-        cell3.innerHTML = "N/A"
-        cell4.innerHTML = "N/A"
-        cell5.innerHTML = "N/A"
-      }
-      else{
-        cell1.innerHTML = ticker_data[0]
-        cell2.innerHTML = ticker_data[1]
-        cell3.innerHTML = ticker_data[2]
-        cell4.innerHTML = ticker_data[3]
-        cell5.innerHTML = ticker_data[4]
-      }
     }
     else{
-      var cells = rowExist.cells;
+      var cells = rowExist.cells
 
-      if (ticker_data === undefined){
-        cells[1].innerHTML = "N/A"
-        cells[2].innerHTML = "N/A"
-        cells[3].innerHTML = "N/A"
-        cells[4].innerHTML = "N/A"
-        cells[5].innerHTML = "N/A"
-      }
-      else{
-        cells[1].innerHTML = ticker_data[0]
-        cells[2].innerHTML = ticker_data[1]
-        cells[3].innerHTML = ticker_data[2]
-        cells[4].innerHTML = ticker_data[3]
-        cells[5].innerHTML = ticker_data[4]
-      }
+      cells[1].innerHTML = ticker_data[0]
+      cells[2].innerHTML = ticker_data[1]
+      cells[3].innerHTML = ticker_data[2]
+      cells[4].innerHTML = ticker_data[3]
+      cells[5].innerHTML = ticker_data[4]
     }
 
-    if (ticker_data === undefined){
-      continue;
-    }
-    else{
-      change = parseFloat(ticker_data[3])
-      var cells = document.getElementById(ticker).cells
+    change = parseFloat(ticker_data[2])
+    var cells = document.getElementById(ticker).cells
 
-      if (change > 0){
-        cells[3].innerHTML = '+' + ticker_data[2]
-        cells[4].innerHTML = '+' + ticker_data[3]
-        cells[3].classList.add("text-success")
-        cells[4].classList.add("text-success")
-      }
-      else if (change < 0){
-        cells[3].classList.add("text-danger")
-        cells[4].classList.add("text-danger")
-      }
-      else {
-        cells[3].classList.add("text-warning")
-        cells[4].classList.add("text-warning")
-      }
+    if (change > 0){
+      cells[3].innerHTML = '+' + ticker_data[2]
+      cells[4].innerHTML = '+' + ticker_data[3]
+      cells[3].classList.add("text-success")
+      cells[4].classList.add("text-success")
+    }
+    else if (change < 0){
+      cells[3].classList.add("text-danger")
+      cells[4].classList.add("text-danger")
+    }
+    else {
+      cells[3].classList.add("text-warning")
+      cells[4].classList.add("text-warning")
     }
   }
   return
