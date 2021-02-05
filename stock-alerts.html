@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -46,11 +46,28 @@
     <p>
       <h3 class='display-3 text-center text-warning'>Stock Price Alerts<br></h3>
       <h3 class="text-muted text-center">Stay ahead of the game</h3>
-
     </p>
     <hr class="text-light my-3" />
     <div class="container">
-
+      <form>
+        <div class="row mb-3">
+          <label for="inputTicker" class="col-sm-2 col-form-label text-light">Ticker</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputTicker" pattern="[a-zA-Z.]+" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="inputDiscord" class="col-sm-2 col-form-label text-light">Discord ID</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputDiscord" pattern="[0-9]+" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-5">
+            <button type="submit" class="btn btn-primary float-end">Add Alert</button>
+          </div>
+        </div>
+      </form>
 
       <hr class="my-2"/>
       <table id="alertsTable" class="table table-hover table-sm table-dark">
@@ -65,7 +82,6 @@
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-    <script src="js/stock_chart.js"></script>
 
   </body>
 </html>
