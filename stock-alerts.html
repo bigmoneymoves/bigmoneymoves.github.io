@@ -32,10 +32,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link" aria-current="page" href="index.html">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="stock-alerts.html">Stock Alerts</a>
+              <a class="nav-link active" href="#">Stock Alerts</a>
             </li>
             <li class="nav-item">
               <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Hold GME</a>
@@ -47,43 +47,21 @@
 
     <hr class="text-light my-1"/>
     <p>
-      <h1 class='display-1 text-center text-warning'>GME to the Moon!</h1>
+      <h3 class='display-3 text-center text-warning'>Stock Price Alerts<br></h3>
+      <h3 class="text-muted text-center">Stay ahead of the game</h3>
+
     </p>
+    <hr class="text-light my-3" />
     <div class="container">
-      <div class="row">
-        <div class="col">
-          <label for="addInput" class="text-light">Add ticker:</label>
-          <div class="input-group">
-            <input type="text" class="form-control" id="addInput" placeholder="TICKER">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="add_ticker('addInput')">Submit</button>
-          </div>
-        </div>
 
-        <div class="col">
-          <label for="delInput" class="text-light">Delete ticker:</label>
-          <div class="input-group">
-            <input type="text" class="form-control" id="delInput" placeholder="TICKER">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="remove_ticker('delInput')">Submit</button>
-          </div>
-        </div>
-
-        <div class="col">
-          <label for="searchInput" class="text-light">Filter by name:</label>
-          <div class="input-group">
-            <input type="text" class="form-control" id="searchInput" onkeyup="search_chart('searchInput')" placeholder="Search">
-          </div>
-        </div>
-      </div>
 
       <hr class="my-2"/>
-      <table id="stockTable" class="table table-hover table-sm table-dark">
+      <table id="alertsTable" class="table table-hover table-sm table-dark">
         <tr class="table-primary">
+          <th>DATE</th>
           <th>TICKER</th>
-          <th>PREV PRICE</th>
-          <th>CUR PRICE</th>
-          <th>CHANGE</th>
-          <th>CHANGE %</th>
-          <th>VOLUME</th>
+          <th>TYPE</th>
+          <th>PRICE / CHANGE %</th>
         </tr>
       </table>
     </div>
