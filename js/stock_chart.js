@@ -8,10 +8,6 @@ async function add_ticker(id){
   var ticker = document.getElementById(id).value;
   var toAdd = ticker.toUpperCase();
 
-  if (toAdd == ""){
-    alert("You have not entered a valid ticker. Please check your spelling.")
-  }
-
   const response = await fetch(write_url + toAdd)
 
   if (response.ok){
@@ -19,7 +15,13 @@ async function add_ticker(id){
     alert("The ticker " + toAdd + " was added to the database successfully!")
   }
   else{
-    alert("The ticker " + toAdd + " already exists in the database.")
+
+    if (response.text() == "duplicate"){
+      alert("The ticker " + toAdd + " already exists in the database.")
+    }
+    else {
+      alert("The ticker " + toAdd + " is invalid. Please check your spelling.")
+    }
   }
 
   return
