@@ -58,7 +58,6 @@ async function remove_ticker(id){
 
 async function fetch_stocks(){
   all_stock_data = await getData(fetch_url);
-  console.log(all_stock_data)
   tickers = all_stock_data["tickers"];
   update_chart();
 
