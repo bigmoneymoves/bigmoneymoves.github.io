@@ -132,17 +132,4 @@ function search_chart(key){
   }
 }
 
-function save_data(){
-  var tableData = table.innerHTML;
-  localStorage.bmmTableData = tableData
-  return
-}
-
-function load_previous_data(){
-  if (localStorage.bmmTableData){
-    table.innerHTML = localStorage.bmmTableData;
-  }
-  return
-}
-
 setInterval(fetch_stocks, 1000)

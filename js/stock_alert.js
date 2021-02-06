@@ -100,17 +100,6 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 
-function save_data(){
-  var alertTableData = alertTable.innerHTML;
-  localStorage.bmmAlertsTable = alertTableData;
-  return
-}
-
-function load_prev_data(){
-  var loadData = localStorage.bmmAlertsTable;
-  alertTable.innerHTML = loadData;
-}
-
 document.getElementById("alertForm").addEventListener('submit', function (event) {
         event.preventDefault();
 })
