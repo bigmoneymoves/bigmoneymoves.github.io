@@ -51,15 +51,13 @@ async function add_alert(){
   var ptype = priceType.value
 
   if (ptype == "perChange"){
-    var value = changeInput.value
+    var data = [id, atype, ptype, changeInput.value]
     var discordMsg = `<@${id}> The stock **${ticker}** has been added to the list of alerts. I will alert you when it goes ${atype} ${value}%`
   }
   else{
-    var value = priceInput.value
+    var data = [id, atype, ptype, priceInput.value]
     var discordMsg = `<@${id}> The stock **${ticker}** has been added to the list of alerts. I will alert you when it goes ${atype} your price target of ${value}`
   }
-
-  data = [id, atype, ptype, value]
 
   const resp = await fetch(write_url + ticker, {
     method: 'PUT',
@@ -130,7 +128,7 @@ async function update_alert_chart(){
         }
 
         if (ptype == "price"){
-          cell2.innerHTML = sign + '$' + price
+          cell2.innerHTML = sign + parseFloat(price).toLocaleString('en-US', {style: 'currency', currency: 'USD'})
         }
         else{
           cell2.innerHTML = sign + price + "%"
