@@ -18,6 +18,8 @@ var alertTable = document.getElementById("alertsTable")
 var modal = new bootstrap.Modal(document.getElementById('alertModal'))
 var modalBody = document.getElementById("modalBody")
 
+var discordWebHook = "https://discord.com/api/webhooks/807711942822985778/Rwut-Unhmw464KuOSPXgqJHKxeCsAttI7RGOGa4NAVsS6ZITsCQoNQKbkkNqNdCnQ913"
+
 function uppercase(id){
   var input = document.getElementById(id);
   text = input.value
@@ -50,9 +52,11 @@ async function add_alert(){
 
   if (ptype == "perChange"){
     var value = changeInput.value
+    var discordMsg = `<@${id}> The stock **${ticker}** has been added to the list of alerts. I will alert you when it goes ${atype} ${value}%`
   }
   else{
     var value = priceInput.value
+    var discordMsg = `<@${id}> The stock **${ticker}** has been added to the list of alerts. I will alert you when it goes ${atype} your price target of ${value}`
   }
 
   data = [id, atype, ptype, value]
@@ -71,17 +75,25 @@ async function add_alert(){
     modalBody.innerHTML = `The stock <b>${ticker}</b> has been added to the list of alerts.`
     form.reset()
     await update_alert_chart()
+
+    await fetch(discordWebHook, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({'content': discordMsg})
+    })
     return
   }
   else{
     if (resp.status == 403){
-    modalBody.innerHTML = `The stock ${ticker} could not be added. An identical alert already exists.`
-      return
+      modalBody.innerHTML = `The stock ${ticker} could not be added. An identical alert already exists.`
     }
-    else{
+    else {
     modalBody.innerHTML = `The stock ${ticker} could not be added. Please make sure that the ticker exists.`
-      return
     }
+
+    return
   }
 }
 
@@ -93,33 +105,36 @@ async function update_alert_chart(){
 
   for (const [ticker, t_alerts] of Object.entries(alerts)){
     for (var i = 0; i < t_alerts.length; i++) {
-      // Add a new row here in the table
-      var newRow = alertTable.insertRow(-1)
-      var cell0 = newRow.insertCell(-1)
-      var cell1 = newRow.insertCell(-1)
-      var cell2 = newRow.insertCell(-1)
-      var cell3 = newRow.insertCell(-1)
+      rowID = document.getElementById(t_alerts[i])
+      if (rowID == null){
+        var newRow = alertTable.insertRow(-1)
+        newRow.id = t_alerts[i]
+        var cell0 = newRow.insertCell(-1)
+        var cell1 = newRow.insertCell(-1)
+        var cell2 = newRow.insertCell(-1)
 
-      var usr = t_alerts[i][0]
-      var type = t_alerts[i][1]
-      var ptype = t_alerts[i][2]
-      var price = t_alerts[i][3]
+        var usr = t_alerts[i][0]
+        var type = t_alerts[i][1]
+        var ptype = t_alerts[i][2]
+        var price = t_alerts[i][3]
+        var sign;
 
-      cell0.innerHTML = usr
-      cell1.innerHTML = ticker
+        cell0.innerHTML = usr
+        cell1.innerHTML = ticker
 
-      if (alert == "above"){
-        cell2.innerHTML = "ALERT WHEN ABOVE VALUE"
-      }
-      else{
-        cell2.innerHTML = "ALERT WHEN BELOW VALUE"
-      }
+        if (type == "above"){
+          var sign = '>'
+        }
+        else{
+          var sign = '<'
+        }
 
-      if (ptype == "price"){
-        cell3.innerHTML = price
-      }
-      else{
-        cell3.innerHTML = price + "%"
+        if (ptype == "price"){
+          cell2.innerHTML = sign + '$' + price
+        }
+        else{
+          cell2.innerHTML = sign + price + "%"
+        }
       }
     }
   }
@@ -136,6 +151,13 @@ var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggl
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
+
+function uniqueID(string) {
+  // Math.random should be unique because of its seeding algorithm.
+  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+  // after the decimal.
+  return '_' + Math.random().toString(36).substr(2, 9);
+};
 
 document.getElementById("alertForm").addEventListener('submit', function (event) {
         event.preventDefault();
