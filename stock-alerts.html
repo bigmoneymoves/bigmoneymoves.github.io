@@ -50,26 +50,31 @@
     </p>
     <hr class="text-light my-3" />
     <div class="container">
-      <form>
+      <form id="alertForm">
         <div class="row mb-3">
           <label for="tickerInput" class="col-sm-2 col-form-label text-light">Ticker</label>
           <div class="col-sm-3">
-            <input type="text" class="form-control" id="tickerInput" pattern="^[a-zA-Z\.]+$" required>
+            <input type="text" class="form-control" id="tickerInput" pattern="^[a-zA-Z\.]+$" style="text-transform: uppercase;" required>
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-sm-2">
-            <p class="col-form-label text-light">Discord ID <i class="bi bi-question-circle" style="color: white; display: inline"></i></p>
+            <p class="col-form-label text-light">Discord ID
+              <a data-bs-toggle="tooltip" title data-bs-original-title="Use .myid on the server to get your Discord ID"><i class="bi bi-question-circle" style="color: white;"></i></a></p>
           </div>
           <div class="col-sm-3">
             <input type="text" class="form-control" id="discordInput" pattern="[0-9]+" required>
           </div>
         </div>
         <div class="row mb-3">
-          <label for="alertTypeSelect" class="col-sm-2 col-form-label text-light">Alert Type</label>
+          <div class="col-sm-2">
+            <p class="col-form-label text-light">Alert Type
+              <a data-bs-toggle="tooltip" title data-bs-original-title="If using below value and change %, will alert user when it goes below negative change %.">
+                <i class="bi bi-question-circle" style="color: white;"></i></a></p>
+          </div>
           <div class="col-sm-3">
             <select class="form-select" id="alertTypeSelect" aria-label="Default select example" required>
-              <option selected disabled value="default">Choose alert type</option>
+              <option selected disabled value="">Choose alert type</option>
               <option value="above">Alert when ticker goes above value</option>
               <option value="below">Alert when ticker goes below value</option>
             </select>
@@ -78,25 +83,34 @@
         <div class="row mb-3">
           <label for="priceTypeSelect" class="col-sm-2 col-form-label text-light">Price Type</label>
           <div class="col-sm-3">
-            <select class="form-select" aria-label="Default select example" id="priceTypeSelect" onchange="showOption()" required>
-              <option selected disabled value="default">Choose price type</option>
+            <select class="form-select" id="priceTypeSelect" onchange="showOption('priceTypeSelect')" required>
+              <option selected disabled value="">Choose price type</option>
               <option value="perChange">Change %</option>
               <option value="price">Price</option>
             </select>
           </div>
         </div>
-        <div class="row mb-3" style="display: none;">
+        <div class="row mb-3" id="priceRow" style="display: none;">
           <label for="priceInput" class="col-sm-2 col-form-label text-light">Price</label>
           <div class="col-sm-3">
             <div class="input-group mb-3">
               <span class="input-group-text" id="inputGroupPrepend">$</span>
-              <input type="text" class="form-control" id="priceInput" pattern="[0-9]+\.+[0-9]*" placeholder="00.00" required>
+              <input type="text" class="form-control" id="priceInput" pattern="[0-9]+(\.[0-9]*)*" placeholder="00.00">
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3" id="changeRow" style="display: none;">
+          <label for="priceInput" class="col-sm-2 col-form-label text-light">Change %</label>
+          <div class="col-sm-3">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="changeInput" pattern="[0-9]+(\.[0-9]*)*" placeholder="00.00">
+              <span class="input-group-text" id="inputGroupPrepend">%</span>
             </div>
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-sm-5">
-            <button type="submit" class="btn btn-primary float-end">Add Alert</button>
+            <button type="submit" class="btn btn-primary float-end" onclick="add_alert()">Add Alert</button>
           </div>
         </div>
       </form>
@@ -104,9 +118,9 @@
       <hr class="my-2"/>
       <table id="alertsTable" class="table table-hover table-sm table-dark">
         <tr class="table-primary">
+          <th>USER</th>
           <th>DATE</th>
           <th>TICKER</th>
-          <th>TYPE</th>
           <th>PRICE / CHANGE %</th>
         </tr>
       </table>

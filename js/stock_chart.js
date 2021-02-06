@@ -15,7 +15,6 @@ async function add_ticker(id){
     alert("The ticker " + toAdd + " was added to the database successfully!")
   }
   else{
-
     if (response.text() == "duplicate"){
       alert("The ticker " + toAdd + " already exists in the database.")
     }
