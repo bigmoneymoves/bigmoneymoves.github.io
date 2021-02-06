@@ -19,7 +19,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
-  <body class="bg-dark">
+  <body class="bg-dark" onload="update_alert_chart()">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
@@ -119,13 +119,17 @@
       </form>
 
       <hr class="my-2"/>
-      <table id="alertsTable" class="table table-hover table-sm table-dark">
-        <tr class="table-primary">
-          <th>USER</th>
-          <th>DATE</th>
-          <th>TICKER</th>
-          <th>PRICE / CHANGE %</th>
-        </tr>
+      <table id="alertsTable" class="table table-hover table-sm table-dark table-responsive">
+        <thead>
+          <tr class="table-primary">
+            <th>USER</th>
+            <th>TICKER</th>
+            <th>TYPE</th>
+            <th>PRICE / CHANGE %</th>
+          </tr>
+        </thead>
+        <tbody id="alertsTableBody">
+        </tbody>
       </table>
     </div>
 

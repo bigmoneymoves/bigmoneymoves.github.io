@@ -1,4 +1,4 @@
-var fetch_url = "https://updategithubdata.deraphel.repl.co/alerts";
+var fetch_url = "https://updategithubdata.deraphel.repl.co/alerts/";
 var write_url = "https://updategithubdata.deraphel.repl.co/alerts-write/";
 var delete_url = "https://updategithubdata.deraphel.repl.co/alerts-delete/";
 
@@ -86,7 +86,44 @@ async function add_alert(){
 }
 
 async function update_alert_chart(){
-  const alerts = await fetch_alerts()
+  alerts = await fetch_alerts()
+
+  // {"alerts": {"GME": [[user, above/below, pricetype, price/change%]]}}
+  // Table: User / Ticker / Alert Type / Price/Change%
+
+  for (const [ticker, t_alerts] of Object.entries(alerts)){
+    for (var i = 0; i < t_alerts.length; i++) {
+      // Add a new row here in the table
+      var newRow = alertTable.insertRow(-1)
+      var cell0 = newRow.insertCell(-1)
+      var cell1 = newRow.insertCell(-1)
+      var cell2 = newRow.insertCell(-1)
+      var cell3 = newRow.insertCell(-1)
+
+      var usr = t_alerts[i][0]
+      var type = t_alerts[i][1]
+      var ptype = t_alerts[i][2]
+      var price = t_alerts[i][3]
+
+      cell0.innerHTML = usr
+      cell1.innerHTML = ticker
+
+      if (alert == "above"){
+        cell2.innerHTML = "ALERT WHEN ABOVE VALUE"
+      }
+      else{
+        cell2.innerHTML = "ALERT WHEN BELOW VALUE"
+      }
+
+      if (ptype == "price"){
+        cell3.innerHTML = price
+      }
+      else{
+        cell3.innerHTML = price + "%"
+      }
+    }
+  }
+
   return
 }
 

@@ -58,6 +58,7 @@ async function remove_ticker(id){
 
 async function fetch_stocks(){
   all_stock_data = await getData(fetch_url);
+  console.log(all_stock_data)
   tickers = all_stock_data["tickers"];
   update_chart();
 
@@ -76,7 +77,7 @@ function update_chart(){
     var rowExist = document.getElementById(ticker)
 
     if (rowExist == null){
-      var row = table.insertRow()
+      var row = table.insertRow(-1)
       row.id = ticker
       // ["TICKER", "PREV CLOSE", "CUR PRICE", "CHANGE", "CHANGE %", "VOLUME"]
       var cell0 = row.insertCell(-1)
@@ -86,6 +87,12 @@ function update_chart(){
       var cell4 = row.insertCell(-1)
       var cell5 = row.insertCell(-1)
       cell0.innerHTML = `<a class="text-light" style="text-decoration: none;" href="https://finance.yahoo.com/quote/${ticker}">${ticker}</a>`
+
+      cell1.innerHTML = ticker_data[0]
+      cell2.innerHTML = ticker_data[1]
+      cell3.innerHTML = ticker_data[2]
+      cell4.innerHTML = ticker_data[3]
+      cell5.innerHTML = ticker_data[4]
     }
     else{
       var cells = rowExist.cells
