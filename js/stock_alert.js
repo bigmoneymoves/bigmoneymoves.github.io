@@ -2,21 +2,32 @@ var fetch_url = "https://updategithubdata.deraphel.repl.co/alerts";
 var write_url = "https://updategithubdata.deraphel.repl.co/alerts-write/";
 var delete_url = "https://updategithubdata.deraphel.repl.co/alerts-delete/";
 
-function uppercase(id){
-  var tickerInput = document.getElementById(id);
-  text = tickerInput.value
+var form = document.getElementById("alertForm")
+var price = document.getElementById("priceSelect")
+var alertType = document.getElementById("alertTypeSelect")
+var priceType = document.getElementById("priceTypeSelect")
+var priceRow = document.getElementById("priceRow")
+var changeRow = document.getElementById("changeRow")
+var priceInput = document.getElementById("priceInput")
+var changeInput = document.getElementById("changeInput")
+var discordInput = document.getElementById("discordInput")
+var tickerInput = document.getElementById("tickerInput")
 
-  tickerInput.value = text.toUpperCase();
+var alertTable = document.getElementById("alertsTable")
+
+var modal = new bootstrap.Modal(document.getElementById('alertModal'))
+var modalBody = document.getElementById("modalBody")
+
+function uppercase(id){
+  var input = document.getElementById(id);
+  text = input.value
+  input.value = text.toUpperCase();
 }
 
 function showOption(id){
-  var priceSelect = document.getElementById(id).value
-  var priceRow = document.getElementById("priceRow")
-  var changeRow = document.getElementById("changeRow")
-  var priceInput = document.getElementById("priceInput")
-  var changeInput = document.getElementById("changeInput")
+  var ptype = priceType.value;
 
-  if (priceSelect == "perChange"){
+  if (ptype == "perChange"){
     changeRow.style.display = "";
     changeInput.required = true;
     priceRow.style.display = "none";
@@ -31,20 +42,20 @@ function showOption(id){
 }
 
 async function add_alert(){
-  var form = document.getElementById("alertForm")
-  var ticker = document.getElementById("tickerInput").value.toUpperCase()
-  var id = document.getElementById("discordInput").value
-  var alertType = document.getElementById("alertTypeSelect").value
-  var priceType = document.getElementById("priceTypeSelect").value
 
-  if (priceType == "perChange"){
-    var value = document.getElementById("changeInput").value
+  var ticker = tickerInput.value.toUpperCase()
+  var id = discordInput.value
+  var atype = alertType.value
+  var ptype = priceType.value
+
+  if (ptype == "perChange"){
+    var value = changeInput.value
   }
   else{
-    var value = document.getElementById("priceInput").value
+    var value = priceInput.value
   }
 
-  data = [id, alertType, priceType, value]
+  data = [id, atype, ptype, value]
 
   const resp = await fetch(write_url + ticker, {
     method: 'PUT',
@@ -54,19 +65,21 @@ async function add_alert(){
     body: JSON.stringify(data)
   })
 
+  modal.toggle()
+
   if (resp.ok){
-    alert(`The stock ${ticker} has been added to the list of alerts.`)
+    modalBody.innerHTML = `The stock <b>${ticker}</b> has been added to the list of alerts.`
     form.reset()
     await update_alert_chart()
     return
   }
   else{
     if (resp.status == 403){
-      alert(`The stock ${ticker} could not be added. An identical alert already exists.`)
+    modalBody.innerHTML = `The stock ${ticker} could not be added. An identical alert already exists.`
       return
     }
     else{
-      alert(`The stock ${ticker} could not be added. Please make sure that the ticker exists.`)
+    modalBody.innerHTML = `The stock ${ticker} could not be added. Please make sure that the ticker exists.`
       return
     }
   }
@@ -87,6 +100,17 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 
+function save_data(){
+  var alertTableData = alertTable.innerHTML;
+  localStorage.bmmAlertsTable = alertTableData;
+  return
+}
+
+function load_prev_data(){
+  var loadData = localStorage.bmmAlertsTable;
+  alertTable.innerHTML = loadData;
+}
+
 document.getElementById("alertForm").addEventListener('submit', function (event) {
         event.preventDefault();
-      })
+})

@@ -3,6 +3,7 @@ var write_url = "https://updategithubdata.deraphel.repl.co/stocks-write/";
 var delete_url = "https://updategithubdata.deraphel.repl.co/stocks-delete/";
 var all_stock_data = {};
 var tickers = [];
+var table = document.getElementById("stockTable");
 
 async function add_ticker(id){
   var ticker = document.getElementById(id).value;
@@ -69,7 +70,6 @@ async function getData(url){
 }
 
 function update_chart(){
-  table = document.getElementById("stockTable");
   for (var i = 0; i < tickers.length; i++) {
     var ticker = tickers[i]
     var ticker_data = all_stock_data["stocks"][ticker]
@@ -120,7 +120,6 @@ function update_chart(){
 
 function search_chart(key){
   var searchTerm = document.getElementById(key).value.toUpperCase();
-  var table = document.getElementById("stockTable");
   var rows = table.rows;
   for (var i = 1; i < rows.length; i++) {
     td = rows[i].getElementsByTagName("td")[0]; // get first column of row
@@ -131,6 +130,19 @@ function search_chart(key){
       rows[i].style.display = ""
     }
   }
+}
+
+function save_data(){
+  var tableData = table.innerHTML;
+  localStorage.bmmTableData = tableData
+  return
+}
+
+function load_previous_data(){
+  if (localStorage.bmmTableData){
+    table.innerHTML = localStorage.bmmTableData;
+  }
+  return
 }
 
 setInterval(fetch_stocks, 1000)
