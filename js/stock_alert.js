@@ -52,11 +52,12 @@ async function add_alert(){
 
   if (ptype == "perChange"){
     var data = [id, atype, ptype, changeInput.value]
-    var discordMsg = `<@${id}> The stock **${ticker}** has been added to the list of alerts. I will alert you when it goes ${atype} ${value}%`
+    var discordMsg = `<@${id}> The stock **${ticker}** has been added to the list of alerts. I will alert you when it goes ${atype} **${changeInput.value}%**`
   }
   else{
     var data = [id, atype, ptype, priceInput.value]
-    var discordMsg = `<@${id}> The stock **${ticker}** has been added to the list of alerts. I will alert you when it goes ${atype} your price target of ${value}`
+    var price = parseFloat(priceInput.value).toLocaleString('en-US', {style: 'currency', currency: 'USD'})
+    var discordMsg = `<@${id}> The stock **${ticker}** has been added to the list of alerts. I will alert you when it goes ${atype} your price target of **${price}**`
   }
 
   const resp = await fetch(write_url + ticker, {
