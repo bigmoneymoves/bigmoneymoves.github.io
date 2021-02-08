@@ -88,6 +88,9 @@ async function add_alert(){
     if (resp.status == 403){
       modalBody.innerHTML = `The stock ${ticker} could not be added. An identical alert already exists.`
     }
+    else if (resp.status == 402){
+      modalBody.innerHTML = `The stock ${ticker} could not be added. You need to add it to the chart first.`
+    }
     else {
     modalBody.innerHTML = `The stock ${ticker} could not be added. Please make sure that the ticker exists.`
     }
@@ -150,13 +153,6 @@ var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggl
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
-
-function uniqueID(string) {
-  // Math.random should be unique because of its seeding algorithm.
-  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-  // after the decimal.
-  return '_' + Math.random().toString(36).substr(2, 9);
-};
 
 document.getElementById("alertForm").addEventListener('submit', function (event) {
         event.preventDefault();
