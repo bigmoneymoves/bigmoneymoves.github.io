@@ -3,7 +3,7 @@ var write_url = "https://updategithubdata.deraphel.repl.co/stocks-write/";
 var delete_url = "https://updategithubdata.deraphel.repl.co/stocks-delete/";
 var all_stock_data = {};
 var tickers = [];
-var table = document.getElementById("stockTable");
+var table = document.getElementById("tableBody");
 
 async function add_ticker(id){
   var ticker = document.getElementById(id).value;
@@ -136,6 +136,147 @@ function search_chart(key){
       rows[i].style.display = ""
     }
   }
+}
+
+function sortTableNum(n) {
+  var switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  switching = true;
+  // Set the sorting direction to ascending:
+  dir = "asc";
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // Start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /* Loop through all table rows (except the
+    first, which contains table headers): */
+    for (i = 0; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+      shouldSwitch = false;
+      /* Get the two elements you want to compare,
+      one from current row and one from the next: */
+      if (n == 5){
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        x_num = parseVolume(x.innerHTML)
+        y_num = parseVolume(y.innerHTML)
+      }
+      else if (n == 4){
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        x_num = parsePercentage(x.innerHTML)
+        y_num = parsePercentage(y.innerHTML)
+      }
+
+      /* Check if the two rows should switch place,
+      based on the direction, asc or desc: */
+      if (dir == "asc") {
+        if (x_num > y_num) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x_num < y_num) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark that a switch has been done: */
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      // Each time a switch is done, increase this count by 1:
+      switchcount ++;
+    } else {
+      /* If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again. */
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+
+function sortTable(n) {
+  var switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  switching = true;
+  // Set the sorting direction to ascending:
+  dir = "asc";
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // Start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /* Loop through all table rows (except the
+    first, which contains table headers): */
+    for (i = 0; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+      shouldSwitch = false;
+      /* Get the two elements you want to compare,
+      one from current row and one from the next: */
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /* Check if the two rows should switch place,
+      based on the direction, asc or desc: */
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark that a switch has been done: */
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      // Each time a switch is done, increase this count by 1:
+      switchcount ++;
+    } else {
+      /* If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again. */
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+
+function parseVolume(vol){
+  var lastChar = vol.slice(-1)
+  var num = parseFloat(vol.slice(0, -1))
+
+  if (lastChar == 'k'){
+    num *= (10 ** 3)
+  }
+  else if (lastChar == 'M'){
+    num *= (10 ** 6)
+  }
+  else if (lastChar == 'B'){
+    num *= (10 ** 9)
+  }
+
+  return num
+}
+
+function parsePercentage(percent){
+  var num = percent.replace("%", "");
+  return parseFloat(num);
 }
 
 setInterval(fetch_stocks, 1000)
