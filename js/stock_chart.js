@@ -111,14 +111,20 @@ function update_chart(){
       cells[4].innerHTML = '+' + ticker_data[3]
       cells[3].classList.add("text-success")
       cells[4].classList.add("text-success")
+      cells[3].classList.remove("text-warning", "text-danger")
+      cells[4].classList.remove("text-warning", "text-danger")
     }
     else if (change < 0){
       cells[3].classList.add("text-danger")
       cells[4].classList.add("text-danger")
+      cells[3].classList.remove("text-success", "text-warning")
+      cells[4].classList.remove("text-success", "text-warning")
     }
     else {
       cells[3].classList.add("text-warning")
       cells[4].classList.add("text-warning")
+      cells[3].classList.remove("text-success", "text-danger")
+      cells[4].classList.remove("text-success", "text-danger")
     }
   }
   return
